@@ -13,7 +13,13 @@ describe Oystercard do
     it 'can raise error at limit' do
       maximum_balance = Oystercard::MAXIMUM_BALANCE
       subject.top_up(maximum_balance)
-      expect { subject.top_up(1) }.to raise_error("£90 is the limit")
+      expect { subject.top_up(1) }.to raise_error("#{maximum_balance} is the limit")
+    end
+  end
+  describe '#deduct' do
+    it 'can deduct balance' do
+      subject.top_up(20)
+      expect(subject.deduct(10)).to eq(10)
     end
   end
 end
