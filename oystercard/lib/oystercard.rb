@@ -1,14 +1,15 @@
+# require 'pry'
 MAXIMUM_BALANCE = 90 # frozen_string_literal: true
 MINIMUM_BALANCE = 1
-MINIMUM_FARE = 5
+MINIMUM_FARE = 1
 PENALTY_FARE = 6
 # Oystercard class
 class Oystercard
-  attr_reader :balance, :starting_station, :exit_station, :journey_history, :journey
+  attr_reader :balance, :starting_station, :exit_station, :journeys
 
   def initialize
     @balance = 0
-    @journey_history = []
+    @journeys = JourneyLog.new
   end
 
   def top_up(num)
@@ -20,23 +21,16 @@ class Oystercard
   def touch_in(station)
     raise 'You need more money!' if minimum?(@balance)
 
-    @journey = Journey.new
-    @journey.start_journey(station)
+    @journeys.start(station)
   end
 
   def touch_out(station)
-    @journey.end_journey(station)
-    store_journey_history
-    deduct(@journey.fare)
-    @journey = nil
-  end
-
-  def store_journey_history
-    @journey_history.push(@journey.completed_journey)
+    @journeys.finish(station)
+    deduct(@journeys.fare)
   end
 
   def in_journey?
-    @journey.nil? ? false : true
+    @journeys.in_journey? ? false : true
   end
 
   private
@@ -52,3 +46,4 @@ class Oystercard
     @balance -= num
   end
 end
+# binding.pry
