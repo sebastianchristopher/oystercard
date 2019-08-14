@@ -12,4 +12,10 @@ class Journey
   def completed_journey
     { start: @starting_station, end: @exit_station }
   end
+
+  def fare
+    return PENALTY_FARE if @starting_station.nil? || @exit_station.nil?
+    
+    MINIMUM_FARE
+  end
 end

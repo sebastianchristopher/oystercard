@@ -1,4 +1,5 @@
 require 'journey'
+# require 'oystercard'
 describe Journey do
   let(:starting_station) { double(:starting_station) }
   let(:exit_station) { double(:exit_station) }
@@ -15,5 +16,18 @@ describe Journey do
     subject.start_journey(starting_station)
     subject.end_journey(exit_station)
     expect(subject.completed_journey).to eq({ start: starting_station, end: exit_station })
+  end
+  it 'deducts the minimum fare if there is a start and end station' do
+    subject.start_journey(starting_station)
+    subject.end_journey(exit_station)
+    expect(subject.fare).to eq(MINIMUM_FARE)
+  end
+  it 'deducts the penalty fare if there is not a start station' do
+    subject.end_journey(exit_station)
+    expect(subject.fare).to eq(PENALTY_FARE)
+  end
+  it 'deducts the penalty fare if there is not an end station' do
+    subject.start_journey(starting_station)
+    expect(subject.fare).to eq(PENALTY_FARE)
   end
 end

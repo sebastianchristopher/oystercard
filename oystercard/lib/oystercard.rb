@@ -1,6 +1,7 @@
 MAXIMUM_BALANCE = 90 # frozen_string_literal: true
 MINIMUM_BALANCE = 1
-MINIMUM_FEE = 5
+MINIMUM_FARE = 5
+PENALTY_FARE = 6
 # Oystercard class
 class Oystercard
   attr_reader :balance, :starting_station, :exit_station, :journey_history, :journey
@@ -16,12 +17,8 @@ class Oystercard
     @balance += num
   end
 
-  def in_journey?
-    @journey.nil? ? false : true
-  end
-
   def touch_in(station)
-    raise 'You need more money!' if @balance < MINIMUM_BALANCE
+    raise 'You need more money!' if minimum?(@balance)
 
     @journey = Journey.new
     @journey.start_journey(station)
@@ -30,7 +27,7 @@ class Oystercard
   def touch_out(station)
     @journey.end_journey(station)
     store_journey_history
-    deduct(MINIMUM_FEE)
+    deduct(@journey.fare)
     @journey = nil
   end
 
@@ -38,10 +35,17 @@ class Oystercard
     @journey_history.push(@journey.completed_journey)
   end
 
+  def in_journey?
+    @journey.nil? ? false : true
+  end
+
   private
 
   def maximum?(num)
     @balance + num > MAXIMUM_BALANCE
+  end
+  def minimum?(num)
+    @balance < MINIMUM_BALANCE
   end
 
   def deduct(num)

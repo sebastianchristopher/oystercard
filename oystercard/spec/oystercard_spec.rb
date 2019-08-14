@@ -60,7 +60,7 @@ describe Oystercard do
     it 'charges at least the minimum fee' do
       subject.top_up(10)
       subject.touch_in(station)
-      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-MINIMUM_FEE)
+      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-MINIMUM_FARE)
     end
     xit 'can record exit station' do
       subject.top_up(10)
