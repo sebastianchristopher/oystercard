@@ -11,4 +11,9 @@ describe Journey do
     subject.end_journey(exit_station)
     expect(subject.exit_station).to eq(exit_station)
   end
+  it 'can return a completed journey with start and end stations' do
+    subject.start_journey(starting_station)
+    subject.end_journey(exit_station)
+    expect(subject.completed_journey).to eq({ start: starting_station, end: exit_station })
+  end
 end

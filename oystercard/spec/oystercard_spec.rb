@@ -38,7 +38,7 @@ describe Oystercard do
     it 'can raise an error at lower limit' do
       expect { subject.touch_in(station) }.to raise_error('You need more money!')
     end
-    it 'can record starting station' do
+    xit 'can record starting station' do
       subject.top_up(10)
       subject.touch_in(station)
       expect(subject.starting_station).to eq(station)
