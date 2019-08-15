@@ -1,4 +1,4 @@
-# JourneyLog class, holds journeys, starts and ends them
+# JourneyLog class, holds journeys, starts and ends them by instantiating new Journey
 class JourneyLog
   def initialize(journey_class = Journey)
     @journey_class = journey_class
@@ -6,6 +6,7 @@ class JourneyLog
   end
 
   def start(station)
+    @journeys << @current_journey if in_journey?
     current_journey.start_journey(station)
   end
 
@@ -20,7 +21,7 @@ class JourneyLog
   end
 
   def in_journey?
-    @current_journey.nil?
+    !@current_journey.nil?
   end
 
   def journeys

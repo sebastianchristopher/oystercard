@@ -1,24 +1,20 @@
 # require 'pry'
+DEFAULT_BALANCE = 0
 MAXIMUM_BALANCE = 90 # frozen_string_literal: true
 MINIMUM_BALANCE = 1
 MINIMUM_FARE = 1
 PENALTY_FARE = 6
-# Oystercard class
+# responsible for touching in/out AND managing balance
 class Oystercard
-  attr_reader :balance, :starting_station, :exit_station, :journeys
+  attr_reader :balance, :journeys
 
-  def initialize
-    @balance = 0
-    @journeys = JourneyLog.new
-  end
-
-  def top_up(num)
-    raise "#{MAXIMUM_BALANCE} is the limit" if maximum?(num)
-
-    @balance += num
+  def initialize(journey_log_class = JourneyLog)
+    @balance = DEFAULT_BALANCE
+    @journeys = journey_log_class.new
   end
 
   def touch_in(station)
+    deduct(PENALTY_FARE) if in_journey?
     raise 'You need more money!' if minimum?(@balance)
 
     @journeys.start(station)
@@ -30,7 +26,13 @@ class Oystercard
   end
 
   def in_journey?
-    @journeys.in_journey? ? false : true
+    @journeys.in_journey?
+  end
+
+  def top_up(num)
+    raise "#{MAXIMUM_BALANCE} is the limit" if maximum?(num)
+
+    @balance += num
   end
 
   private

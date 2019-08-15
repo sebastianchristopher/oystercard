@@ -1,12 +1,11 @@
 require 'station'
 
 describe Station do
+  subject(:subject) { Station.new("Barbican", 1) }
   it 'has a name we can check' do
-    station = Station.new("Barbican", 1)
-    expect(station.name).to eq("Barbican")
+    expect(subject.name).to eq("Barbican")
   end
   it 'has a zone we can check' do
-    station = Station.new("Barbican", 1)
-    expect(station.zone).to eq(1)
+    expect(subject.zone).to eq(1)
   end
 end
