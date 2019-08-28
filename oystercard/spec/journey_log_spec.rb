@@ -24,4 +24,11 @@ describe JourneyLog do
     subject.start(starting_station)
     expect(subject.journeys).to include(journey)
   end
+  # it 'doesn\'t return the original array' do
+  #   allow(journey).to receive(:start_journey).with(starting_station)
+  #   allow(journey).to receive(:end_journey).with(exit_station)
+  #   subject.start(starting_station)
+  #   subject.finish(exit_station)
+  #   expect(subject.journeys.object_id).to_not eq(subject)
+  # end
 end
